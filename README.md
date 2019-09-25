@@ -11,6 +11,7 @@ For now the tool itself is pretty simple, but still a nice tool to use as your f
 ``` 
 git clone https://github.com/leandrofroes/gohunting.git
 cd gohunting
+make install
 make
 ```
 
