@@ -1,6 +1,6 @@
 # What is gohunting?
 
-gohunting is a golang process hunting tool which you can use to retrieve useful informations from running process. Also, you can pass a file as a parameter an run it, the result is the same. 
+gohunting is a golang process hunting tool which you can use to retrieve useful informations from a running process. Also, you can pass a file as parameter and run it, the result is the same. 
 
 For now the tool itself is pretty simple, but still a nice tool to use as your first step in a Forensic Analysis.
 
