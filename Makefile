@@ -3,7 +3,7 @@ GOFLAGS=-ldflags "-s -w"
 
 .PHONY: install build clean
 
-all: install build
+all: build
 
 install:
 	go get -u github.com/shirou/gopsutil/process
