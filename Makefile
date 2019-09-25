@@ -15,4 +15,3 @@ build: gohunting.go
 
 clean:
 	rm -f gohunting
-
