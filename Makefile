@@ -3,14 +3,14 @@ GOFLAGS=-ldflags "-s -w"
 
 .PHONY: install build clean
 
-all: build
+all: install build
 
 install:
 	go get -u github.com/shirou/gopsutil/process
 	go get -u github.com/shirou/gopsutil/net
 	go get -u github.com/fatih/color
 
-build: gohunting.go install
+build: gohunting.go 
 	$(GOCMD) build $(GOFLAGS) $<
 
 clean:
