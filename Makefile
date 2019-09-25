@@ -1,5 +1,5 @@
-GO=go
-GO_FLAGS=-ldflags "-s -w"
+GOCMD=go
+GOFLAGS=-ldflags "-s -w"
 
 .PHONY: install build clean
 
@@ -10,8 +10,8 @@ install:
 	go get -u github.com/shirou/gopsutil/net
 	go get -u github.com/fatih/color
 
-build: install
-	$(GO) build $(GO_FLAGS) gohunting.go
+build: gohunting.go install
+	$(GOCMD) build $(GOFLAGS) $<
 
 clean:
 	rm -f gohunting
