@@ -37,6 +37,7 @@ type Report struct{
   StartedBy string
   WorkingDir string
   BinaryPath string
+  CmdLine string
   OpenFiles []process.OpenFilesStat
   Connections []net.ConnectionStat
 }
@@ -62,6 +63,7 @@ func print_report(r Report){
   fmt.Println("[+] Started by:", green(r.StartedBy))
   fmt.Println("[+] Working Directory:", green(r.WorkingDir))
   fmt.Println("[+] Binary Path:", green(r.BinaryPath))
+  fmt.Println("[+] Command Line:", green(r.CmdLine))
 
   fmt.Println("[+] Open Files:")
 
@@ -72,7 +74,7 @@ func print_report(r Report){
   fmt.Println("[+] Connections:")
 
   for _,conn := range r.Connections{
-    fmt.Println("\tFileDescriptor:", green(conn.Fd))
+    fmt.Println("\tFile Descriptor:", green(conn.Fd))
     fmt.Println("\tFamily:", green(conn.Family))
     fmt.Println("\tType:", green(conn.Type))
     fmt.Printf("\tLocal Address: %s:%d\n", conn.Laddr.IP, conn.Laddr.Port)
@@ -92,6 +94,7 @@ func parse(proc *process.Process) (r Report){
   r.StartedBy, _ = proc.Username()
   r.WorkingDir, _ = proc.Cwd()
   r.BinaryPath, _ = proc.Exe()
+  r.CmdLine, _ = proc.Cmdline()
 
   parent, err := proc.Parent()
 
