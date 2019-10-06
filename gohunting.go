@@ -71,9 +71,10 @@ func print_report(r Report){
     fmt.Println("\t-", green(value.Path))
   }
 
-  fmt.Println("[+] Connections:")
+  fmt.Println("[+] Connections:\n")
 
-  for _,conn := range r.Connections{
+  for i,conn := range r.Connections{
+    fmt.Printf("[%d]\n", i)
     fmt.Println("\tFile Descriptor:", green(conn.Fd))
     fmt.Println("\tFamily:", green(conn.Family))
     fmt.Println("\tType:", green(conn.Type))
