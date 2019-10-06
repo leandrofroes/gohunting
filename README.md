@@ -4,7 +4,7 @@ gohunting is a golang process hunting tool which you can use to retrieve useful 
 
 For now the tool itself is pretty simple, but still a nice tool to use as your first step in a Forensic Analysis.
 
-![](https://github.com/leandrofroes/gohunting/blob/master/pictures/gohunting_output.png)
+![](https://github.com/leandrofroes/gohunting/blob/master/pictures/gohunting_output2.png)
 
 ## Installation
 
