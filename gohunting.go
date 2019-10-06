@@ -30,6 +30,7 @@ func banner(){
 type Report struct{
   Name string
   Background bool
+  Running bool
   ParentPID int32
   ChildrenPID []int32
   Status string
@@ -38,6 +39,7 @@ type Report struct{
   WorkingDir string
   BinaryPath string
   CmdLine string
+  Terminal string
   OpenFiles []process.OpenFilesStat
   Connections []net.ConnectionStat
 }
@@ -56,6 +58,7 @@ func print_report(r Report){
   color.Cyan("[*] Process Information:\n------------------------\n\n")
   fmt.Println("[+] Process Name:", green(r.Name))
   fmt.Println("[+] Background:", green(r.Background))
+  fmt.Println("[+] Running Process:", green(r.Running))
   fmt.Println("[+] Parent PID:", green(r.ParentPID))
   fmt.Println("[+] Children PID:", green(r.ChildrenPID))
   fmt.Println("[+] Status:", green(r.Status))
@@ -64,6 +67,7 @@ func print_report(r Report){
   fmt.Println("[+] Working Directory:", green(r.WorkingDir))
   fmt.Println("[+] Binary Path:", green(r.BinaryPath))
   fmt.Println("[+] Command Line:", green(r.CmdLine))
+  fmt.Println("[+] Terminal:", green(r.Terminal))
 
   fmt.Println("[+] Open Files:")
 
@@ -85,17 +89,19 @@ func print_report(r Report){
 
 }
 
-func parse(proc *process.Process) (r Report){
+func parse_proc(proc *process.Process) (r Report){
 
   r = Report{}
   r.Name, _ = proc.Name()
   r.Background, _ = proc.Background()
+  r.Running, _ = proc.IsRunning()
   r.Status, _ = proc.Status()
   r.MemoryPercent, _ = proc.MemoryPercent()
   r.StartedBy, _ = proc.Username()
   r.WorkingDir, _ = proc.Cwd()
   r.BinaryPath, _ = proc.Exe()
   r.CmdLine, _ = proc.Cmdline()
+  r.Terminal, _ = proc.Terminal()
 
   parent, err := proc.Parent()
 
@@ -129,14 +135,14 @@ func run_file (file string){
     pid := file_data.Pid
     proc, err := process.NewProcess(int32(pid))
     check(err)
-    report_data := parse(proc)
+    report_data := parse_proc(proc)
     print_report(report_data)
 }
 
 func run_proc (pid int){
     proc, err := process.NewProcess(int32(pid))
     check(err)
-    report_data := parse(proc)
+    report_data := parse_proc(proc)
     print_report(report_data)
 }
 
