@@ -5,6 +5,10 @@ import (
   "os"
   "os/exec"
   "flag"
+  "time"
+  "strconv"
+  "crypto/sha256"
+  "io/ioutil"
   "github.com/shirou/gopsutil/process"
   "github.com/shirou/gopsutil/net"
   "github.com/fatih/color"
@@ -31,6 +35,7 @@ type Report struct{
   Name string
   Background bool
   Running bool
+  Timestamp time.Time
   ParentPID int32
   ChildrenPID []int32
   Status string
@@ -38,6 +43,7 @@ type Report struct{
   StartedBy string
   WorkingDir string
   BinaryPath string
+  BinaryHash [32]byte
   CmdLine string
   Terminal string
   OpenFiles []process.OpenFilesStat
@@ -59,13 +65,14 @@ func print_report(r Report){
   fmt.Println("[+] Process Name:", green(r.Name))
   fmt.Println("[+] Background:", green(r.Background))
   fmt.Println("[+] Running Process:", green(r.Running))
+  fmt.Println("[+] Creation Time:", green(r.Timestamp))
   fmt.Println("[+] Parent PID:", green(r.ParentPID))
   fmt.Println("[+] Children PID:", green(r.ChildrenPID))
   fmt.Println("[+] Status:", green(r.Status))
   fmt.Println("[+] Memory Usage:", green(r.MemoryPercent))
   fmt.Println("[+] Started by:", green(r.StartedBy))
   fmt.Println("[+] Working Directory:", green(r.WorkingDir))
-  fmt.Println("[+] Binary Path:", green(r.BinaryPath))
+  fmt.Printf("[+] Binary Path: %s %x\n", green(r.BinaryPath), r.BinaryHash)
   fmt.Println("[+] Command Line:", green(r.CmdLine))
   fmt.Println("[+] Terminal:", green(r.Terminal))
 
@@ -102,6 +109,17 @@ func parse_proc(proc *process.Process) (r Report){
   r.BinaryPath, _ = proc.Exe()
   r.CmdLine, _ = proc.Cmdline()
   r.Terminal, _ = proc.Terminal()
+
+  time_int, _ := proc.CreateTime()
+  time_int = time_int / 1000
+  time_str := strconv.FormatInt(time_int, 10)
+  pretty_time, err := strconv.ParseInt(time_str, 10, 64)
+  check(err)
+  r.Timestamp = time.Unix(pretty_time, 0)
+
+  file, err := ioutil.ReadFile(r.BinaryPath)
+  check(err)
+  r.BinaryHash = sha256.Sum256(file)
 
   parent, err := proc.Parent()
 
