@@ -3,7 +3,6 @@ package main
 import (
   "fmt"
   "os"
-  "os/exec"
   "flag"
   "time"
   "strconv"
@@ -146,17 +145,6 @@ func parse_proc(proc *process.Process) (r Report){
 
 }
 
-func run_file (file string){
-    cmd := exec.Command(file)
-    check(cmd.Start())
-    file_data := cmd.Process
-    pid := file_data.Pid
-    proc, err := process.NewProcess(int32(pid))
-    check(err)
-    report_data := parse_proc(proc)
-    print_report(report_data)
-}
-
 func run_proc (pid int){
     proc, err := process.NewProcess(int32(pid))
     check(err)
@@ -166,12 +154,10 @@ func run_proc (pid int){
 
 func main(){
 
-  usage := `Usage: ./gohunting [-p PID] [-f FILE]
+  usage := `Usage: ./gohunting [-p PID]
               
   -p PID
     Specificy the Process ID
-  -f FILE
-    Specify the file to run
 `
 
   flag.Usage = func(){
@@ -180,12 +166,10 @@ func main(){
   }
 
   pid := flag.Int("p", 0,  "")
-  file := flag.String("f", "", "")
 
   flag.Parse()
 
   if(flag.NFlag() != 1){
-    fmt.Println("Cannot use 2 arguments at the same time.")
     flag.Usage()
     os.Exit(1)
   }
@@ -193,8 +177,6 @@ func main(){
   banner()
 
   switch{
-    case *file != "":
-      run_file(*file)
     case *pid != 0:
       run_proc(*pid)
   }
