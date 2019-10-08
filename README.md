@@ -22,7 +22,7 @@ make
 ## Usage
 
 ```
-./gohunting [-p PID] [-f FILE]
+./gohunting [-p PID]
               
   -p PID
     Specificy the Process ID
