@@ -71,7 +71,7 @@ func print_report(r Report){
   fmt.Println("[+] Memory Usage:", green(r.MemoryPercent))
   fmt.Println("[+] Started by:", green(r.StartedBy))
   fmt.Println("[+] Working Directory:", green(r.WorkingDir))
-  fmt.Printf("[+] Binary Path: %s %x\n", green(r.BinaryPath), r.BinaryHash)
+  fmt.Printf("[+] Binary Path: %s %x (SHA256)\n", green(r.BinaryPath), r.BinaryHash)
   fmt.Println("[+] Command Line:", green(r.CmdLine))
   fmt.Println("[+] Terminal:", green(r.Terminal))
 
